@@ -99,8 +99,6 @@ public class PracticeFactory {
 
     public boolean deletePracticeAndRelated(Practice practice) {
         try {
-
-
             List<String> sqlActions = new ArrayList<>();
             sqlActions.add(repository.getDeleteString(practice));
             QuestionFactory factory = QuestionFactory.getInstance();
