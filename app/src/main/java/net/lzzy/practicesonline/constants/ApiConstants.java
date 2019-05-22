@@ -31,6 +31,8 @@ public class ApiConstants {
     private static final String ACTION_QUESTION="/api/pquestions?practiceid=";
     public static final String URL_QUESTIONS= URL_API.concat(ACTION_QUESTION);
 
+    private static final String ACTION_RESULT="/api/result/PracticeResult";
+    public static final String URL_RESULT=URL_API.concat(ACTION_RESULT);
 
     /**
      * json标签
@@ -54,5 +56,13 @@ public class ApiConstants {
     public static final String JSON_OPTION_LABEL="Label";
     public static final String JSON_OPTION_API_ID="Id";
     public static final String JSON_ANSWER_OPTION_ID="OptionId";
+
+    /**
+     * put方法的json标签
+     */
+    public static final String JSON_RESULT_API_ID="PracticeID";
+    public static final String JSON_RESULT_SCORE_RATIO="ScroreRatio";
+    public static final String JSON_RESULT_WRONG_IDS="WrongQuestionIds";
+    public static final String JSON_RESULT_PERSON_INFO="PhoneNo";
 }
 

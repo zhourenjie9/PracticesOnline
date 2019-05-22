@@ -84,9 +84,7 @@ public class ApiService {
                     }else {
                         throw new IOException("错误代码:" +response.code());
                     }
-
                 }
-
             }
 
             public static String okGet(String address, String args, HashMap<String,Object> headers) throws IOException {
@@ -136,7 +134,6 @@ public class ApiService {
                         .build();
                 try (Response response= CLIENT.newCall(request).execute()){
                     return response.code();
-
                 }
             }
 

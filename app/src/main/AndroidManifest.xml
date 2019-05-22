@@ -25,6 +25,8 @@
             </intent-filter>
         </activity>
         <activity android:name=".activities.PracticesActivity" />
+        <activity android:name=".activities.ResultActivity" />
+
         <service android:name=".network.DetectWebService"/>
     </application>
 

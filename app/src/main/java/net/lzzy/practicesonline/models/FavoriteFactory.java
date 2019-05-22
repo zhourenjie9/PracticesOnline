@@ -11,15 +11,15 @@ import java.util.UUID;
  * Created by lzzy_gxy on 2019/4/18.
  * Description:
  */
-public class FavoniteFactory {
-    private static final FavoniteFactory OUR_INSTANCE = new FavoniteFactory();
+public class FavoriteFactory {
+    private static final FavoriteFactory OUR_INSTANCE = new FavoriteFactory();
     private SqlRepository<Favorite>repository;
 
-    public static FavoniteFactory getInstance() {
+    public static FavoriteFactory getInstance() {
         return OUR_INSTANCE;
     }
 
-    private FavoniteFactory() {
+    private FavoriteFactory() {
         repository = new SqlRepository<>(AppUtils.getContext(),Favorite.class, DbConstants.packager);
     }
 

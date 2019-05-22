@@ -102,10 +102,10 @@ public class PracticeFactory {
             List<String> sqlActions = new ArrayList<>();
             sqlActions.add(repository.getDeleteString(practice));
             QuestionFactory factory = QuestionFactory.getInstance();
-            List<Question> questions = factory.getBypractice(practice.getId().toString());
+            List<Question> questions = factory.getQuestionByPractice(practice.getId().toString());
             if (questions.size() > 0) {
                 for (Question q : questions) {
-                    sqlActions.addAll(factory.getDeleteSting(q));
+                    sqlActions.addAll(factory.getDeleteString(q));
                 }
             }
             repository.exeSqls(sqlActions);

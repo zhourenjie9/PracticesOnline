@@ -14,80 +14,84 @@ import java.util.List;
  * Description:
  */
 public class QuestionFactory {
-    private static final QuestionFactory OUR_INSTANCE = new QuestionFactory();
-    private SqlRepository<Question>repository;
-    private SqlRepository<Option>optionRepository;
+    //SQLiteDatabase db = DbHelper.getInstance(context).getWritableDatabase();
+    private static final QuestionFactory OUR_INSTANCE=new QuestionFactory();
+    private SqlRepository<Question> repository;
+    private SqlRepository<Option> optionRepository;
 
-    public static QuestionFactory getInstance() {
+    public QuestionFactory(){
+        repository=new SqlRepository<>(AppUtils.getContext(),Question.class, DbConstants.packager);
+        optionRepository=new SqlRepository<>(AppUtils.getContext(),Option.class,DbConstants.packager);
+    }
+
+    public static QuestionFactory getInstance(){
         return OUR_INSTANCE;
     }
 
-    private QuestionFactory() {
-        repository = new SqlRepository<>(AppUtils.getContext(),Question.class, DbConstants.packager);
-        optionRepository = new SqlRepository<>(AppUtils.getContext(),Option.class,DbConstants.packager);
-
-    }
-
     private void completeQuestion(Question question) throws InstantiationException, IllegalAccessException {
-        List<Option> options =optionRepository.getByKeyword(question.getId().toString(),
-                new String[]{Option.COL_PRACTICE_ID},true);
+        List<Option> options=optionRepository.getByKeyword(question.getId().toString(),
+                new String[]{Option.COL_QUESTION_ID},true);
         question.setOptions(options);
-        question.setDpType(question.getDpType());
+        question.setDbType(question.getDbType());
+
 
     }
 
-
-    public Question getById(String questionId) throws InstantiationException {
-       try {
-           Question question = repository.getById(questionId);
-           completeQuestion(question);
-           return null;
-       }catch (IllegalAccessException e) {
-           e.printStackTrace();
-       return null;
-       }
+    public Question getById(String questionId){
+        try{
+            Question question=repository.getById(questionId);
+            completeQuestion(question);
+            return question;
+        }catch (IllegalAccessException|InstantiationException e){
+            e.printStackTrace();
+            return null;
+        }
 
     }
 
-    public List<Question> getBypractice(String practiceId) {
-
-            try {
-                List<Question> questions = repository.getByKeyword(practiceId,
-                        new String[]{Question.COL_PRACTICE_ID}, true);
-                for (Question question : questions) {
-                    completeQuestion(question);
-                }
-                return questions;
-            } catch (IllegalAccessException | InstantiationException e) {
-                e.printStackTrace();
+    public List<Question> getQuestionByPractice(String practiceId){
+        try {
+            List<Question> questions=repository.getByKeyword(practiceId,
+                    new String[]{Question.COL_PRACTICE_ID},true);
+            for (Question question:questions){
+                completeQuestion(question);
             }
-            return new ArrayList<>();
+            return questions;
+        } catch (IllegalAccessException|InstantiationException e) {
+            e.printStackTrace();
+        }
 
+        return new ArrayList<>();
 
     }
-
     public void insert(Question question){
-        String q = repository.getInsertString(question);
-        List<String> sqlActions = new ArrayList<>();
-        for (Option option : question.getOptions()){
-            sqlActions.add(optionRepository.getDeleteString(option));
-
+        List<String> sqlActions=new ArrayList<>();
+        for (Option option:question.getOptions()){
+            sqlActions.add(optionRepository.getInsertString(option));
         }
-        sqlActions.add(q);
+        sqlActions.add(repository.getInsertString(question));
         repository.exeSqls(sqlActions);
-    }
-    public List<String> getDeleteSting(Question question){
-        List<String>sqlActions = new ArrayList<>();
-        sqlActions.add(repository.getDeleteString(question));
-        for (Option option : question.getOptions()){
-            sqlActions.add(optionRepository.getDeleteString(option));
 
+
+
+
+
+
+        // optionRepository=repository.getInsertString(question);
+    }
+
+    public List<String> getDeleteString(Question question){
+        List<String> sqlActions=new ArrayList<>();
+        sqlActions.add(repository.getDeleteString(question));
+        for (Option option:question.getOptions()){
+            sqlActions.add(optionRepository.getDeleteString(option));
         }
-        String f = FavoniteFactory.getInstance().getDeleteString(question.getId().toString());
+        String f= FavoriteFactory.getInstance().getDeleteString(question.getId().toString());
         if (!TextUtils.isEmpty(f)){
             sqlActions.add(f);
         }
         return sqlActions;
-
+        //todo:3
     }
 }
+

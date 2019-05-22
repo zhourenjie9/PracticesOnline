@@ -8,7 +8,7 @@ public enum QuestionType {
     /**
      * 题目类型
      */
-    SINCLE_CHOICE("单项选择"),MULTI_CHOICE("不定项选择"),JUDGE("判断");
+    SINGLE_CHOICE("单项选择"),MULTI_CHOICE("不定项选择"),JUDGE("判断");
 
     private String name;
 

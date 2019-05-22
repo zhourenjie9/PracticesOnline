@@ -19,18 +19,20 @@ import java.util.UUID;
  * Description:
  */
 public class Question extends BaseEntity implements Sqlitable, Jsonable {
-    public static final String COL_PRACTICE_ID = "practiceId";
-    private  String content;
+    @Ignored
+    public final static String COL_PRACTICE_ID="practiceId";
+    private String content;
     @Ignored
     private QuestionType type;
-    private int dpType;
+    private int dbType;
     private String analysis;
     private UUID practiceId;
     @Ignored
     private List<Option> options;
 
     public Question(){
-        options = new ArrayList<>();
+        options=new ArrayList<>();
+
     }
 
     public String getContent() {
@@ -45,17 +47,17 @@ public class Question extends BaseEntity implements Sqlitable, Jsonable {
         return type;
     }
 
-    public void setType(QuestionType type) {
-        this.type = type;
+//    public void setType(QuestionType type) {
+//        this.type = type;
+//    }
+
+    public int getDbType() {
+        return dbType;
     }
 
-    public int getDpType() {
-        return dpType;
-    }
-
-    public void setDpType(int dpType) {
-        this.dpType = dpType;
-        type = QuestionType.getInstance(dpType);
+    public void setDbType(int dbType) {
+        this.dbType = dbType;
+        type=QuestionType.getInstance(dbType);
     }
 
     public String getAnalysis() {
@@ -79,7 +81,7 @@ public class Question extends BaseEntity implements Sqlitable, Jsonable {
     }
 
     public void setOptions(List<Option> options) {
-        this.options .clear();
+        this.options.clear();
         this.options.addAll(options);
     }
 
@@ -94,22 +96,20 @@ public class Question extends BaseEntity implements Sqlitable, Jsonable {
     }
 
     @Override
-    public void fromJson(JSONObject json) throws JSONException {
-        analysis =json.getString(ApiConstants.JSON_QUESTION_ANALYSIS);
-        content = json.getString(ApiConstants.JSON_QUESTION_CONTENT);
-        setDpType(json.getInt(ApiConstants.JSON_QUESTION_TYPE));
-        String strOptions = json.getString(ApiConstants.JSON_QUESTION_OPTIONS);
-        String strAnswers = json.getString(ApiConstants.JSON_QUESTION_ANSWER);
-       try {
-           List<Option> options = QuestionService .getOptionsFromJson(strOptions,strAnswers);
-           for (Option option :options){
-               option.setQuestionId(id);
-           }
-           setOptions(options);
-       }catch (IllegalAccessException|InstantiationException e){
-           e.printStackTrace();
-       }
-
+    public void fromJson(JSONObject jsonObject) throws JSONException {
+        analysis=jsonObject.getString(ApiConstants.JSON_QUESTION_ANALYSIS);
+        content=jsonObject.getString(ApiConstants.JSON_QUESTION_CONTENT);
+        setDbType(jsonObject.getInt(ApiConstants.JSON_QUESTION_TYPE));
+        String strOptions=jsonObject.getString(ApiConstants.JSON_QUESTION_OPTIONS);
+        String strAnswers=jsonObject.getString(ApiConstants.JSON_QUESTION_ANSWER);
+        try {
+            List<Option> options= QuestionService.getOptionsFromJson(strOptions,strAnswers);
+            for (Option option:options){
+                option.setQuestionId(id);
+            }
+            setOptions(options);
+        } catch (IllegalAccessException|InstantiationException e) {
+            e.printStackTrace();
+        }
     }
-
 }

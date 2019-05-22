@@ -49,14 +49,14 @@ private SplashHandler handler =new SplashHandler(this);
                     break;
                 case WHAT_COUNT_DONE:
                     if (activity.isServerOn){
-                        activity.gotMain();
+                        activity.gotoMain();
                     }
 
                     break;
                 case WHAT_EXCEPTION:
                     new AlertDialog.Builder(activity)
                             .setMessage(msg.obj.toString())
-                            .setPositiveButton("继续",(dialog, which) -> activity.gotMain())
+                            .setPositiveButton("继续",(dialog, which) -> activity.gotoMain())
                             .setNegativeButton("退出",(dialog, which) -> AppUtils.exit())
                             .show();
 
@@ -67,7 +67,7 @@ private SplashHandler handler =new SplashHandler(this);
                             .setMessage("服务器没有响应，是否继续？\n"+msg.obj)
                             .setPositiveButton("确定",((dialog, which) -> {
                                 if (context instanceof SplashActivity){
-                                    ((SplashActivity)context).gotMain();
+                                    ((SplashActivity)context).gotoMain();
                                 }
                             }
                                     ))
@@ -129,7 +129,7 @@ private SplashHandler handler =new SplashHandler(this);
     }
 
 
-    public void gotMain () {
+    public void gotoMain() {
         startActivity(new Intent(this,PracticesActivity.class));
         finish();
         }
